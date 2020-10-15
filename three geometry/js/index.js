@@ -161,9 +161,9 @@ function cutovereventgroupfunc1() {
         scene.add(point); //点光源添加到场景中
         //文字
         var textdata = [
-            { "text": result[0]['vendorname'] + ':' + result[0]['num'], "num": result[0]['num'], 'pos': [25, 200, 25] },
-            { "text": result[1]['vendorname'] + ':' + result[1]['num'], "num": result[1]['num'], 'pos': [75, 100, 75] },
-            { "text": result[2]['vendorname'] + ':' + result[2]['num'], "num": result[2]['num'], 'pos': [125, 0, 125] }
+            { "text": result[0]['vendorname'] + ':' + result[0]['num'], "num": result[0]['num'], 'pos': [25, 100, 25], 'rotate': 360 * 0 * Math.PI / 180 },
+            { "text": result[1]['vendorname'] + ':' + result[1]['num'], "num": result[1]['num'], 'pos': [75, 100, 75], 'rotate': 360 * 0.3 * Math.PI / 180 },
+            { "text": result[2]['vendorname'] + ':' + result[2]['num'], "num": result[2]['num'], 'pos': [125, 100, 125], 'rotate': 360 * 0.8 * Math.PI / 180 }
         ]
         var loader = new THREE.FontLoader();
         loader.load('./js/three/MicrosoftYaHei_Regular.json', function (font) {
@@ -175,9 +175,15 @@ function cutovereventgroupfunc1() {
                     font: font, size: 10, height: 0.1,
 
                 }), materialtext);
-                text.position.set(textdata[i]['pos'][0], textdata[i]['pos'][1], textdata[i]['pos'][2])
-                text.rotateY(1.07)
-                text.rotateX(Math.PI / 360 * -45)
+                text.position.set(Math.sin(textdata[i]['rotate'] * 180 / Math.PI / 2 + 2) * 100, 60, Math.cos(textdata[i]['rotate'] * 180 / Math.PI / 2 + 2) * 100)
+
+
+                // text.position.x = 100;
+                // text.position.y = 100;
+                // text.position.z = 0;
+                // text.rotation.y = Math.PI / 4;
+                //text.rotateY(1.07)
+                text.rotateX(Math.PI / 360 * -180)
                 scene.add(text);
             }
         });
@@ -200,9 +206,9 @@ function cutovereventgroupfunc1() {
         renderer.setClearColor(0x000000, 0); //设置背景颜色
         $("#cutovereventgroup1").append(renderer.domElement)
         //执行渲染操作   指定场景、相机作为参数
-        // renderer.render(scene, camera);
-        // var axesHelper = new THREE.AxesHelper(500);
-        // scene.add(axesHelper);
+        renderer.render(scene, camera);
+        var axesHelper = new THREE.AxesHelper(500);
+        scene.add(axesHelper);
 
     }
 
