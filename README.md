@@ -21,7 +21,11 @@ threeBSP.js
 
 在地图上面显示点和线的时候：几何体都可以，目前这里面用倒的是SphereGeometry  
 
-如果想要检测鼠标移动到哪儿了：利用射线Raycaster进行碰撞检测
+如果想要检测鼠标移动到哪儿了：利用射线Raycaster进行碰撞检测  
+
+3. 注意  
+如果想获取一定范围的散点数据，可以用http://geojson.io/#map=2/32.2/18.3点击一些点，然后用获取两点之间QuadraticBezierCurve3之后使用getPoints获取两点之间任务数量的点
+
 
 
 
