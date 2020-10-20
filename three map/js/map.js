@@ -1,60 +1,18 @@
 $(function () {
-    resizewh()
+
     starfunc()
     earth3D()
     earthfunc()
 
 })
-function resizewh() {
-    if (parseInt($(window).height()) < 850) {
-        $('html').css({ height: '850px' })
-    } else {
-        $('html').css({ height: $(window).height() })
-    }
-    if (parseInt($(window).width()) < 1400) {//小屏
-        //$(".headerindex").hide()
-        $(".iconright").attr("data-mark", 'open')
-        $(".iconright").css({ "right": "-230px" })
-        $(".map").css({ "width": $(window).width() - 230 })
-        $('html').css({ "overflow-x": "hidden" })
-    } else {
-        //$(".headerindex").show()
-        $(".iconright").attr("data-mark", 'close')
-        $(".iconright").css({ "right": "10px" })
-        $(".map").css({ "width": $(window).width() - 500 })
-        $('html').css({ "overflow-x": "auto" })
-    }
 
-    $('html').css({ width: parseInt($(window).width()) })
-    //$(".mapbg").css({ "width": $(window).width(), "height": $('.container').height() })
-    //$(".map").css({ "width": $(window).width() })
-    $(".header").css("width", $(window).width())
-
-    $(".iconright").mouseover(function () {
-        if ($(".iconright").attr("data-mark") === 'open') {
-            $(".iconright").css({ "right": "10px" })
-        }
-        //var mark = $(".showright").attr("data-mark")
-        //$(".headerindex").show()
-
-        //$(".showright").attr("data-mark", 'close')
-
-    }).mouseout(function () {
-        if ($(".iconright").attr("data-mark") === 'open') {
-            $(".iconright").css({ "right": "-230px" })
-        }
-        //$(".headerindex").hide()
-
-        //$(".showright").attr("data-mark", 'open')
-    })
-}
 //星光
 function starfunc() {
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     var renderer = new THREE.WebGLRenderer();
     //renderer.setSize($(".container").width(), $(".container").height());
-    renderer.setSize($(window).width(), $(window).height());
+    renderer.setSize($('html').width(), $('html').height());
     renderer.setClearColor(0x020512, 1);
     $("#star").append(renderer.domElement)
     //添加光源 
@@ -166,29 +124,12 @@ function earthfunc() {
         depth: 1, // 定义图形拉伸的深度，默认100
         steps: 0, // 拉伸面方向分为多少级，默认为1
         bevelEnabled: true, // 表示是否有斜角，默认为true
-        bevelThickness: 0, // 斜角的深度，默认为6
+        bevelThickness: 1, // 斜角的深度，默认为6
         bevelSize: 0, // 表示斜角的高度，高度会叠加到正常高度
         bebelSegments: 0, // 斜角的分段数，分段数越高越平滑，默认为1
         curveSegments: 0 // 拉伸体沿深度方向分为多少段，默认为1
     }
-    //设置文字
-    var setText = function () {
-        var loader = new THREE.FontLoader();
-        loader.load('./js/three/MicrosoftYaHei_Regular.json', function (font) {
-            for (var key in worldcountry) {
-                var materialtext = new THREE.MeshBasicMaterial({
-                    color: '#2080EC',
-                });
-                var text = new THREE.Mesh(new THREE.TextGeometry(key, { font: font, size: 1, height: 0 }), materialtext);
-                var pos = projection(worldcountry[key])
 
-                text.position.x = pos[0] - 2;
-                text.position.y = -pos[1];
-                text.position.z = 3
-                scene.add(text);
-            }
-        });
-    }
     function lglt2xyz(longitude, latitude, radius) {
         var lg = longitude, lt = latitude;
         var y = radius * Math.sin(lt);
@@ -301,7 +242,7 @@ function earthfunc() {
         drawShapeOptionFun();
         // 渲染
         render();
-        setText()
+
         // var axesHelper = new THREE.AxesHelper(50);
         // scene.add(axesHelper);
 

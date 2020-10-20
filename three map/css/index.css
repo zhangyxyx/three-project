@@ -15,10 +15,9 @@ p,div,span{
 
 }
 html{
-    min-width:800px;
-    /* background:#020512; */
-    background:url('./img/echarth.png') no-repeat;
-    background-size:100% 100%;
+    width:900px;
+    height:800px;
+    overflow:hidden;
 }
 body{
    width:100%;
