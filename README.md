@@ -26,7 +26,9 @@ threeBSP.js
 3. 注意  
 如果想获取一定范围的散点数据，可以用http://geojson.io/#map=2/32.2/18.3点击一些点，然后用获取两点之间QuadraticBezierCurve3之后使用getPoints获取两点之间任务数量的点
 
-获取任意地点的铁路网，可以在OpenStreetMap
+获取任意地点的铁路网，可以在OpenStreetMap 
+
+http://www.overpass-api.de/index.html
 
 
 
