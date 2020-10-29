@@ -30,6 +30,8 @@ threeBSP.js
 
 http://www.overpass-api.de/index.html
 
+想要更好的颜色效果使用着色器材质(ShaderMaterial)
+
 
 
 
