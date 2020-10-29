@@ -30,7 +30,7 @@ threeBSP.js
 
 http://www.overpass-api.de/index.html
 
-想要更好的颜色效果使用着色器材质(ShaderMaterial)
+想要更好的颜色效果使用着色器材质(ShaderMaterial),着色器需要用到glsl资料这https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_2
 
 
 
