@@ -54,6 +54,8 @@ function starfunc() {
 }
 //地图
 function earthfunc() {
+    var provinceArr = []
+    var lineArr = []
     const projection = d3.geoMercator().center([16.585075, 40.223783]).scale(80).translate([0, 0]);
     var timer, timer1;
     // 渲染器
@@ -380,6 +382,25 @@ function earthfunc() {
     // 执行函数
     var render = function () {
         scene.rotation.x = -0.8;
+        provinceArr.forEach(item => {
+            item.material.uniforms['time'].value += .025;
+        });
+        lineArr.forEach(item => {
+            let t = item.material.uniforms.time.value;
+            let size = item.material.uniforms.size.value;
+
+            if (item.maxx > item.minx) {
+                if (t > item.maxx) {
+                    item.material.uniforms.time.value = item.minx - size;
+                }
+                item.material.uniforms['time'].value += 0.2;
+            } else {
+                if (t < item.maxx - size) {
+                    item.material.uniforms.time.value = item.minx;
+                }
+                item.material.uniforms['time'].value -= 0.2;
+            }
+        });
         orbitcontrols.update();
         requestAnimationFrame(render);
         renderer.render(scene, camera);
@@ -457,18 +478,18 @@ function earthfunc() {
             //     color: '#FFFF00',
             //     transparent: true,
             // }));
-
+            var color = '#FFFF00'
             // 获取标记点坐标
             var ballPos = projection(markingItem.pos) //getPosition(markingItem.pos[0], markingItem.pos[1], earthBallSize);
             //ball.position.set(ballPos[0] - 2, -ballPos[1], 3);
 
 
-            let breathBreathPulse = BreathPulse(1, 20, 0x024575);
-            breathBreathPulse.position.set(ballPos[0] - 2, -ballPos[1], 3);
-
-
-
+            let breathBreathPulse = BreathPulse(1, 10, color);
+            breathBreathPulse.position.set(ballPos[0], ballPos[1] - 20, 2.02);
+            breathBreathPulse.name = markingItem['textValue']
+            provinceArr.push(breathBreathPulse)
             marking.add(breathBreathPulse);
+
         })
         marking.name = 'ballarr'
         scene.add(marking);
@@ -477,10 +498,48 @@ function earthfunc() {
         // 线条对象集合
         var groupLines = new THREE.Group();
         // 线条
-        marking.children.forEach(function (item) {
-            var line = addLine(marking.children[0].position, item.position);
-            groupLines.add(line.lineMesh);
-            animateDots.push(line.curve.getPoints(metapNum));
+        var mapling = [{
+            'end': "法国首都-巴黎",
+            'endcode': "法国首都-巴黎",
+            'linedesc': "",
+            'start': "中国首都-北京",
+            'startcode': "中国首都-北京",
+        }]
+        mapling.forEach(function (item1) {
+            // var line = addLine(marking.children[0].position, item.position);
+            // groupLines.add(line.lineMesh);
+            // animateDots.push(line.curve.getPoints(metapNum));
+            var startitem = item1['start']; var enditem = item1['end']
+            var startpos = ''; var endpos = '';
+            marking.children.forEach(function (item) {
+                if (item['name'] === startitem) {
+                    startpos = item
+                }
+                if (item['name'] === enditem) {
+                    endpos = item
+                }
+            })
+
+            // var line = addLine(startpos.position, endpos.position, index);
+            // line.lineMesh.name = 'line'
+            // line.lineMesh.linedesc = item1['linedesc']
+            // line.lineMesh.startendname = startitem + '_' + enditem
+            // line.lineMesh.startendcode = item1['startcode'] + '_' + item1['endcode']
+            // groupLines.add(line.lineMesh);
+            // animateDots.push(line.curve.getPoints(metapNum));
+            var alarmcolor = '0,1,0,1'
+            // if (parseInt(item1['linestat']['main']) === '0') {
+            //     alarmcolor = '0,1,0,1'
+            // } else {
+            //     alarmcolor = '1,0,0,1'
+            // }
+            let flyLine;
+            flyLine = FlyLine(startpos.position, endpos.position, 0xffffff, 0xffffff, 10, alarmcolor);//0x33C631, 0x33C631
+            console.log(flyLine)
+            flyLine.name = 'line'
+            flyLine.linedesc = item1['linedesc']
+            lineArr.push(flyLine);
+            groupLines.add(flyLine);
         })
         scene.add(groupLines);
         // 线上滑动的小球
@@ -551,52 +610,8 @@ function earthfunc() {
     initThree();
     getMarkingPos()
     linepoints()
-    clearInterval(timer)
-    var cameray = 0
-    timer = setInterval(function () {
-        cameray += 1;
-        camera.position.y = 50 - cameray
 
-        if (cameray >= 40) {
-            clearInterval(timer)
-        }
-    }, 10)
-    clearInterval(timer1)
-    timer1 = setInterval(function () {
-        var allmesh = scene.children
-        for (var i = 0; i < allmesh.length; i++) {
-            if (allmesh[i]['name'] === 'ballarr') {
-                for (var j = 0; j < allmesh[i].children.length; j++) {
-                    if (allmesh[i].children[j].material.opacity === 1) {
-                        allmesh[i].children[j].material.opacity = 0.8
-                    } else if (allmesh[i].children[j].material.opacity === 0.8) {
-                        allmesh[i].children[j].material.opacity = 0.6
-                    } else if (allmesh[i].children[j].material.opacity === 0.6) {
-                        allmesh[i].children[j].material.opacity = 0.4
-                    } else if (allmesh[i].children[j].material.opacity === 0.4) {
-                        allmesh[i].children[j].material.opacity = 1
-                    }
-                }
-            }
-        }
-    }, 1000)
-    // timer1 = setInterval(function () {
-    //     var allmesh = scene.children
-    //     for (var i = 0; i < allmesh.length; i++) {
-    //         // if (allmesh[i]['name'] === 'mapbox') {
-    //         //     for (var j = 0; j < showcolor.length; j++) {
-    //         //         if (allmesh[i]['geometry']['name'] === showcolor[j]) {
-    //         //             var str = '0x' + ('00000' + (Math.random() * 0x1000000 << 0).toString(16)).substr(-6)
-    //         //             console.log(str)
-    //         //             allmesh[i].material[0].color.setHex(str);
-    //         //             allmesh[i].material[1].color.setHex(str);
-    //         //         }
-    //         //     }
 
-    //         // }
-    //     }
-
-    // }, 6000)
     // 窗口resize事件
     window.onresize = function () {
         // 重新初始化尺寸
