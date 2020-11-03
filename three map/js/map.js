@@ -585,6 +585,23 @@ function earthfunc() {
 
 
     }
+    var setText = function () {
+        var loader = new THREE.FontLoader();
+        loader.load('./js/three/MicrosoftYaHei_Regular.json', function (font) {
+            for (var key in worldcountry) {
+                var materialtext = new THREE.MeshBasicMaterial({
+                    color: '#01f5f6'//'#2080EC',
+                });
+                var text = new THREE.Mesh(new THREE.TextGeometry(key, { font: font, size: 1, height: 0 }), materialtext);
+                var pos = (projection(worldcountry[key]))
+
+                text.position.x = pos[0];
+                text.position.y = pos[1] - 20;
+                text.position.z = 3
+                scene.add(text);
+            }
+        })
+    }
     // 获取世界经纬度信息函数
     var getWorldGeometry = function () {
         $.ajax({
@@ -610,7 +627,7 @@ function earthfunc() {
     initThree();
     getMarkingPos()
     linepoints()
-
+    setText()
 
     // 窗口resize事件
     window.onresize = function () {
