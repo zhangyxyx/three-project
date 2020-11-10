@@ -55,6 +55,7 @@ function starfunc() {
 //地图
 function earthfunc() {
     var provinceArr = []
+    var mapline = [];
     var lineArr = []
     const projection = d3.geoMercator().center([16.585075, 40.223783]).scale(80).translate([0, 0]);
     var timer, timer1;
@@ -107,6 +108,34 @@ function earthfunc() {
         var v = v1.add(v2);
         return v.divideScalar(2);
     }
+    // 总的顶点数据量width * height
+    function funZ(width, height) {
+        var size = width * height;
+        var data = new Uint8Array(size);
+        var perlin = new ImprovedNoise();
+        // 控制地面显示效果  可以尝试0.01  0.1  1等不值
+        // 0.1凹凸不平的地面效果  1山脉地形效果
+        var quality = 1;
+        // z值不同每次执行随机出来的地形效果不同
+        var z = Math.random() * 100;
+        for (var j = 0; j < 4; j++) {
+            for (var i = 0; i < size; i++) {
+                // x的值0 1 2 3 4 5 6...
+                var x = i % width;
+                // ~表示按位取反 两个~就是按位取反后再取反
+                // ~~相当于Math.floor(),效率高一点
+                // y重复若干个值
+                var y = ~~(i / width);
+                // 通过噪声生成数据
+                data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
+
+            }
+            // 循环执行的时候，quality累乘  乘的系数是1  显示效果平面
+            quality *= 5;
+        }
+        return data;
+    }
+
     window.FlyLine = function (from, to, colorf, colort, size) {
         const vertexShader = `
         uniform float time;
@@ -338,6 +367,20 @@ function earthfunc() {
         const material = new THREE.MeshBasicMaterial({ color: faceColor })
         const material1 = new THREE.MeshBasicMaterial({ color: sideColor })
         geometry.name = mark['name']
+
+        // var width = 250, height = 250;
+        // // 生成地形顶点高度数据
+        // var data = funZ(width, height)
+
+        // geometry.rotateX(-Math.PI / 2);
+        // var vertices = geometry.attributes.position.array;
+        // // 改变顶点高度值
+        // for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
+        //     vertices[j + 1] = data[i] * 0.8;
+        // }
+        // // 不执行computeVertexNormals，没有顶点法向量数据
+        // geometry.computeVertexNormals();
+
         const mesh = new THREE.Mesh(geometry, [material, material1])
         const line = new THREE.Line(lineGeometry, lineMaterial)
         mesh.name = "mapbox"
@@ -535,7 +578,7 @@ function earthfunc() {
             // }
             let flyLine;
             flyLine = FlyLine(startpos.position, endpos.position, 0xffffff, 0xffffff, 10, alarmcolor);//0x33C631, 0x33C631
-            console.log(flyLine)
+
             flyLine.name = 'line'
             flyLine.linedesc = item1['linedesc']
             lineArr.push(flyLine);
@@ -584,6 +627,36 @@ function earthfunc() {
         animationLine();
 
 
+
+
+
+
+    }
+    var setPoint = function () {
+        $.ajax({
+            url: './js/data/11.json',
+            success: function (data) {
+                var result = data['osm']['node']
+                let pointgroup = new THREE.Group();
+                for (var i = 0; i < 100; i++) {
+
+                    var item = result[i]
+                    console.log(item)
+                    // 创建标记点球体
+                    var geometry = new THREE.SphereGeometry(dotWidth, 30, 30)
+                    var ball = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
+                        color: 'red',
+                        transparent: true,
+                    }));
+                    // 获取标记点坐标
+                    var pos = [parseFloat(item['-lon']), parseFloat(item['-lat'])]
+                    var ballPos = projection(pos)
+                    ball.position.set(ballPos[0] - 2, -ballPos[1], 30);
+                    pointgroup.add(ball)
+                }
+                scene.add(pointgroup);
+            }
+        })
     }
     var setText = function () {
         var loader = new THREE.FontLoader();
@@ -601,6 +674,60 @@ function earthfunc() {
                 scene.add(text);
             }
         })
+    }
+    //山脉
+    var shanFunc = function () {
+        // width，height两个变量用控制平面几何体顶点数量
+        // 行列两个方向顶点数量不同  显示效果不同   分别为100和250显示不同的效果
+        var width = 250, height = 250;
+        // 生成地形顶点高度数据
+        var data = funZ(width, height);
+        //创建一个平面地形，行列两个方向顶点数据分别为width，height
+        var geometry = new THREE.PlaneBufferGeometry(450, 450, width - 1, height - 1);
+        geometry.rotateX(-Math.PI / 2);
+        // 访问几何体的顶点位置坐标数据
+        var vertices = geometry.attributes.position.array;
+        // 改变顶点高度值
+        for (var i = 0, j = 0, l = vertices.length; i < l; i++, j += 3) {
+            vertices[j + 1] = data[i] * 0.8;
+        }
+        // 不执行computeVertexNormals，没有顶点法向量数据
+        geometry.computeVertexNormals();
+
+        var material = new THREE.MeshLambertMaterial({
+            color: '#212179',
+            side: THREE.DoubleSide,
+        });
+        var mesh = new THREE.Mesh(geometry, material);
+        scene.add(mesh);
+        // 总的顶点数据量width * height
+        function funZ(width, height) {
+            var size = width * height;
+            var data = new Uint8Array(size);
+            var perlin = new ImprovedNoise();
+            // 控制地面显示效果  可以尝试0.01  0.1  1等不值
+            // 0.1凹凸不平的地面效果  1山脉地形效果
+            var quality = 1;
+            // z值不同每次执行随机出来的地形效果不同
+            var z = Math.random() * 100;
+            for (var j = 0; j < 4; j++) {
+                for (var i = 0; i < size; i++) {
+                    // x的值0 1 2 3 4 5 6...
+                    var x = i % width;
+                    // ~表示按位取反 两个~就是按位取反后再取反
+                    // ~~相当于Math.floor(),效率高一点
+                    // y重复若干个值
+                    var y = ~~(i / width);
+                    // 通过噪声生成数据
+                    data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
+                }
+                // 循环执行的时候，quality累乘  乘的系数是1  显示效果平面
+                quality *= 5;
+            }
+
+            return data;
+
+        }
     }
     // 获取世界经纬度信息函数
     var getWorldGeometry = function () {
@@ -628,6 +755,8 @@ function earthfunc() {
     getMarkingPos()
     linepoints()
     setText()
+    setPoint()
+    shanFunc()
 
     // 窗口resize事件
     window.onresize = function () {
