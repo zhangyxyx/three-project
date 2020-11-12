@@ -1,6 +1,6 @@
 $(function () {
 
-    starfunc()
+    //starfunc()
     earth3D()
     earthfunc()
 
@@ -352,6 +352,7 @@ function earthfunc() {
         const shape = new THREE.Shape();
         const lineMaterial = new THREE.LineBasicMaterial({ color: '#1783EC' });
         const lineGeometry = new THREE.Geometry();
+
         for (let i = 0; i < polygon.length; i++) {
             const [x, y] = projection(polygon[i]);
             if (i === 0) {
@@ -364,6 +365,15 @@ function earthfunc() {
             faceColor = colorarr[(ItemIndexmark) % 4]
         }
         const geometry = new THREE.ExtrudeGeometry(shape, options)
+        let vertices = geometry.vertices
+        // let zdata = funZ(100, 100)
+
+        // for (var i = 0; i < 1000; i++) {
+        //     if (vertices[i] != undefined) {
+        //         vertices[i]['z'] = zdata[i] * 0.1
+        //     }
+
+        // }
         const material = new THREE.MeshBasicMaterial({ color: faceColor })
         const material1 = new THREE.MeshBasicMaterial({ color: sideColor })
         geometry.name = mark['name']
@@ -460,8 +470,12 @@ function earthfunc() {
             alpha: true,
             antialias: true
         });
+
         // 设置窗口尺寸
         renderer.setSize(dom.clientWidth, dom.clientHeight);
+        //告诉渲染器需要阴影效果
+        renderer.setClearColor(0xffffff);
+        //renderer.shadowMap.enabled = true;
         // 初始化控制器
         orbitcontrols = new THREE.OrbitControls(camera, renderer.domElement);
         dom.appendChild(renderer.domElement);
@@ -469,10 +483,22 @@ function earthfunc() {
         drawShapeOptionFun();
         // 渲染
         render();
-
+        initLight()
         // var axesHelper = new THREE.AxesHelper(50);
         // scene.add(axesHelper);
 
+    }
+    var light;
+    function initLight() {
+        scene.add(new THREE.AmbientLight(0x444444));
+
+        light = new THREE.PointLight(0xffffff);
+        light.position.set(0, 0, 3000);
+
+        //告诉平行光需要开启阴影投射
+        light.castShadow = true;
+
+        scene.add(light);
     }
     // 添加轨迹函数
     var addLine = function (v0, v3) {
@@ -625,12 +651,6 @@ function earthfunc() {
         }
         scene.add(aGroup);
         animationLine();
-
-
-
-
-
-
     }
     var setPoint = function () {
         $.ajax({
@@ -677,14 +697,60 @@ function earthfunc() {
     }
     //山脉
     var shanFunc = function () {
+
+
+        // var loader = new THREE.OBJLoader()
+        // loader.load('./js/data/model/model.obj', function (obj) {
+        //     var material = new THREE.MeshLambertMaterial({ color: 'red' });
+        //     obj.traverse(function (child) {
+        //         if (child instanceof THREE.Mesh) {
+        //             child.material = material
+        //             child.geometry.computeFaceNormals();
+        //             child.geometry.computeVertexNormals();
+        //         }
+        //     });
+
+        //     let mesh = obj; //储存到全局变量中
+        //     mesh.position.x = 116.377248 - 25;
+        //     mesh.position.y = 39.917149 - 50;
+        //     mesh.position.z = 3
+        //     mesh.rotateX(Math.PI / 2);
+        //     scene.add(mesh)
+        // })
+
+        var loader = new THREE.OBJLoader();
+        loader.load("./js/data/model/model.obj", function (loadedMesh) {
+            var material = new THREE.MeshLambertMaterial({ color: '#1c337d', side: THREE.DoubleSide });//122254
+
+            // 加载完obj文件是一个场景组，遍历它的子元素，赋值纹理并且更新面和点的发现了
+            loadedMesh.children.forEach(function (child) {
+                child.material = material;
+                child.geometry.computeFaceNormals();
+                child.geometry.computeVertexNormals();
+            });
+            loadedMesh.position.x = 116.377248 - 25;
+            loadedMesh.position.y = 39.917149 - 50;
+            loadedMesh.position.z = 3
+            loadedMesh.rotateX(Math.PI / 2);
+            loadedMesh.receiveShadow = true;
+            loadedMesh.scale.set(0.4, 1, 0.25);
+            scene.add(loadedMesh);
+        });
+
+
+    }
+    const worldWidth = 256, worldDepth = 256;
+    var shanFunc1 = function () {
         // width，height两个变量用控制平面几何体顶点数量
         // 行列两个方向顶点数量不同  显示效果不同   分别为100和250显示不同的效果
         var width = 250, height = 250;
         // 生成地形顶点高度数据
         var data = funZ(width, height);
+
         //创建一个平面地形，行列两个方向顶点数据分别为width，height
-        var geometry = new THREE.PlaneBufferGeometry(450, 450, width - 1, height - 1);
-        geometry.rotateX(-Math.PI / 2);
+        var geometry = new THREE.PlaneBufferGeometry(450, 450, 449, 449);
+        //geometry.rotateX(-Math.PI / 2 + 0.8);
+
         // 访问几何体的顶点位置坐标数据
         var vertices = geometry.attributes.position.array;
         // 改变顶点高度值
@@ -694,40 +760,113 @@ function earthfunc() {
         // 不执行computeVertexNormals，没有顶点法向量数据
         geometry.computeVertexNormals();
 
-        var material = new THREE.MeshLambertMaterial({
-            color: '#212179',
-            side: THREE.DoubleSide,
+
+        var materialtext = new THREE.MeshBasicMaterial({
+            color: 'red'
         });
-        var mesh = new THREE.Mesh(geometry, material);
+        var mesh = new THREE.Mesh(geometry, materialtext);
+
+        mesh.position.x = 116.377248 - 25;
+        mesh.position.y = 39.917149 - 50;
+        mesh.position.z = 3
         scene.add(mesh);
         // 总的顶点数据量width * height
-        function funZ(width, height) {
-            var size = width * height;
-            var data = new Uint8Array(size);
-            var perlin = new ImprovedNoise();
-            // 控制地面显示效果  可以尝试0.01  0.1  1等不值
-            // 0.1凹凸不平的地面效果  1山脉地形效果
-            var quality = 1;
-            // z值不同每次执行随机出来的地形效果不同
-            var z = Math.random() * 100;
-            for (var j = 0; j < 4; j++) {
-                for (var i = 0; i < size; i++) {
-                    // x的值0 1 2 3 4 5 6...
-                    var x = i % width;
-                    // ~表示按位取反 两个~就是按位取反后再取反
-                    // ~~相当于Math.floor(),效率高一点
-                    // y重复若干个值
-                    var y = ~~(i / width);
-                    // 通过噪声生成数据
-                    data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
-                }
-                // 循环执行的时候，quality累乘  乘的系数是1  显示效果平面
-                quality *= 5;
-            }
 
-            return data;
+    }
+    function funZ(width, height) {
+        var size = width * height;
+        var data = new Uint8Array(size);
+        var perlin = new ImprovedNoise();
+        // 控制地面显示效果  可以尝试0.01  0.1  1等不值
+        // 0.1凹凸不平的地面效果  1山脉地形效果
+        var quality = 1;
+        // z值不同每次执行随机出来的地形效果不同
+        var z = Math.random() * 100;
+        for (var j = 0; j < 4; j++) {
+            for (var i = 0; i < size; i++) {
+                // x的值0 1 2 3 4 5 6...
+                var x = i % width;
+                // ~表示按位取反 两个~就是按位取反后再取反
+                // ~~相当于Math.floor(),效率高一点
+                // y重复若干个值
+                var y = ~~(i / width);
+                // 通过噪声生成数据
+                data[i] += Math.abs(perlin.noise(x / quality, y / quality, z) * quality * 1.75);
+                console.log(y);
+            }
+            // 循环执行的时候，quality累乘  乘的系数是1  显示效果平面
+            quality *= 5;
+        }
+
+        return data;
+
+    }
+    function generateTexture(data, width, height) {
+
+        // bake lighting into texture
+
+        let context, image, imageData, shade;
+
+        const vector3 = new THREE.Vector3(0, 0, 0);
+
+        const sun = new THREE.Vector3(1, 1, 1);
+        sun.normalize();
+
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+
+        context = canvas.getContext('2d');
+        context.fillStyle = '#000';
+        context.fillRect(0, 0, width, height);
+
+        image = context.getImageData(0, 0, canvas.width, canvas.height);
+        imageData = image.data;
+
+        for (let i = 0, j = 0, l = imageData.length; i < l; i += 4, j++) {
+
+            vector3.x = data[j - 2] - data[j + 2];
+            vector3.y = 2;
+            vector3.z = data[j - width * 2] - data[j + width * 2];
+            vector3.normalize();
+
+            shade = vector3.dot(sun);
+
+            imageData[i] = (96 + shade * 128) * (0.5 + data[j] * 0.007);
+            imageData[i + 1] = (32 + shade * 96) * (0.5 + data[j] * 0.007);
+            imageData[i + 2] = (shade * 96) * (0.5 + data[j] * 0.007);
 
         }
+
+        context.putImageData(image, 0, 0);
+
+        // Scaled 4x
+
+        const canvasScaled = document.createElement('canvas');
+        canvasScaled.width = width * 4;
+        canvasScaled.height = height * 4;
+
+        context = canvasScaled.getContext('2d');
+        context.scale(4, 4);
+        context.drawImage(canvas, 0, 0);
+
+        image = context.getImageData(0, 0, canvasScaled.width, canvasScaled.height);
+        imageData = image.data;
+
+        for (let i = 0, l = imageData.length; i < l; i += 4) {
+
+            const v = ~ ~(Math.random() * 5);
+
+            imageData[i] += v;
+            imageData[i + 1] += v;
+            imageData[i + 2] += v;
+
+        }
+
+        context.putImageData(image, 0, 0);
+
+        return canvasScaled;
+
     }
     // 获取世界经纬度信息函数
     var getWorldGeometry = function () {
@@ -751,6 +890,7 @@ function earthfunc() {
     })
     // 页面资源加载完全执行函数
     getWorldGeometry();
+
     initThree();
     getMarkingPos()
     linepoints()
