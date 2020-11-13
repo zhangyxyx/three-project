@@ -25,15 +25,15 @@ threeBSP.js </br>
     方法1：直接打开OpenStreetMap地图网址（），手动圈出范围，下载范围内的路网信息（小范围的可以，类似场馆周围地理信息） </br>
     方法2：打开OpenStreetMap的api(http://www.overpass-api.de/index.html),使用以下代码</br>
         在Query and Convert Forms中输入,点击Query获取到<relation id="2782246">这个id;
-        ```javascript
+        ```
         <query type=""relation>
         <has-kv k="boundary" v="administrative">
         <has-kv k="name:zh" v="贵阳市"/>
         </query>
         <print mode="body"/>
-        ```
+        ```</br>
         同样的页面中输入,ref是3600000000+2782246得到的结果，将这个代码放到Overpass API Convert Form中直接，得到xml的城市路网信息文件</br>
-        ```javascript
+        ```
         <osm-script timeout="1800" element-limit="100000000">
         <union>
             <area-query ref="3602782246"/>
@@ -47,7 +47,7 @@ threeBSP.js </br>
         </union>
         <print mode="body"/>
         </osm-script>
-        ```
+        ```</br>
 （3）设置线段或者点等任何物体的颜色 </br>
     使用glsl（https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_2）</br>
 
