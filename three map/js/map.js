@@ -653,30 +653,29 @@ function earthfunc() {
         animationLine();
     }
     var setPoint = function () {
+        let pointgroup = new THREE.Group();
         $.ajax({
             url: './js/data/11.json',
             success: function (data) {
-                var result = data['osm']['node']
-                let pointgroup = new THREE.Group();
-                for (var i = 0; i < 100; i++) {
-
-                    var item = result[i]
-                    console.log(item)
+                var result = data['features']
+                result.forEach(function (item) {
+                    var item1 = item['geometry']['coordinates']
                     // 创建标记点球体
-                    var geometry = new THREE.SphereGeometry(dotWidth, 30, 30)
+                    var geometry = new THREE.SphereGeometry(0.5, 30, 30)
                     var ball = new THREE.Mesh(geometry, new THREE.MeshBasicMaterial({
-                        color: 'red',
+                        color: '#04c5c5',
                         transparent: true,
                     }));
                     // 获取标记点坐标
-                    var pos = [parseFloat(item['-lon']), parseFloat(item['-lat'])]
+                    var pos = [parseFloat(item1[0]), parseFloat(item1[1])]
                     var ballPos = projection(pos)
-                    ball.position.set(ballPos[0] - 2, -ballPos[1], 30);
+                    ball.position.set(ballPos[0] - 2, ballPos[1] - 20, 3);
                     pointgroup.add(ball)
-                }
+                })
                 scene.add(pointgroup);
             }
         })
+
     }
     var setText = function () {
         var loader = new THREE.FontLoader();

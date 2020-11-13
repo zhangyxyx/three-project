@@ -13,26 +13,65 @@ threeBSP.js
 
 
 2. 基础知识  
-需要知道基本的概念：场景 照相机 灯光 渲染器 
+需要知道基本的概念：场景 照相机 灯光 渲染器 </br>
+获取到/data/world1.json世界地图的基本数据，使用ExtrudeGeometry几个体绘制出地图的基本轮廓，至于地图的颜色是否倾斜，就可以根据自己实际需求进行设置 </br>
+我们想在地图上画出国家的名称：用到的是TextGeometry,需要注意的是如果是中文显示需要另外load一下js/three/MicrosoftYaHei_Regular.json这个文件</br>
+在地图上面显示点和线的时候：几何体都可以，目前这里面用倒的是SphereGeometry </br> 
+如果想要检测鼠标移动到哪儿了：利用射线Raycaster进行碰撞检测 </br>
 
-获取到/data/world1.json世界地图的基本数据，使用ExtrudeGeometry几个体绘制出地图的基本轮廓，至于地图的颜色是否倾斜，就可以根据自己实际需求进行设置 
+3. 功能
+（1） 散点数据：
+    方法1：打开QGIS里面设置随机点（推荐）
+    方法2：使用网址http://geojson.io/#map=2/32.2/18.3在这个里面手动点一些点
+（2）获取路网信息： 
+    方法1：直接打开OpenStreetMap地图网址（），手动圈出范围，下载范围内的路网信息（小范围的可以，类似场馆周围地理信息） 
+    方法2：打开OpenStreetMap的api(http://www.overpass-api.de/index.html),使用以下代码
+        在Query and Convert Forms中输入,点击Query获取到<relation id="2782246">这个id;
+        ```
+        <query type=""relation>
+        <has-kv k="boundary" v="administrative">
+        <has-kv k="name:zh" v="贵阳市"/>
+        </query>
+        <print mode="body"/>
+        ```
+        同样的页面中输入,ref是3600000000+2782246得到的结果，将这个代码放到Overpass API Convert Form中直接，得到xml的城市路网信息文件
+        ```
+        <osm-script timeout="1800" element-limit="100000000">
+        <union>
+            <area-query ref="3602782246"/>
+            <recurse type="node-relation" into="rels"/>
+            <recurse type="node-way"/>
+            <recurse type="way-relation"/>
+        </union>
+        <union>
+            <item/>
+            <recurse type="way-node"/>
+        </union>
+        <print mode="body"/>
+        </osm-script>
+        ```
+（3）设置线段或者点等任何物体的颜色 
+    使用glsl（https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_2）
 
-我们想在地图上画出国家的名称：用到的是TextGeometry,需要注意的是如果是中文显示需要另外load一下js/three/MicrosoftYaHei_Regular.json这个文件 
 
-在地图上面显示点和线的时候：几何体都可以，目前这里面用倒的是SphereGeometry  
+4. 使用的软件
+代码：vscode
+散点：QGIS
+模型：SketchUp
 
-如果想要检测鼠标移动到哪儿了：利用射线Raycaster进行碰撞检测  
+5. 资料
+three.js文档：http://www.webgl3d.cn/threejs/docs/ 
 
-3. 注意  
-如果想获取一定范围的散点数据，可以用http://geojson.io/#map=2/32.2/18.3点击一些点，然后用获取两点之间QuadraticBezierCurve3之后使用getPoints获取两点之间任务数量的点
+three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 
 
-获取任意地点的铁路网，可以在OpenStreetMap 
+获取国内地图数据：http://datav.aliyun.com/tools/atlas/#&lat=30.332329214580188&lng=106.72278672066881&zoom=3.5 
 
-http://www.overpass-api.de/index.html
+获取全球路网信息方法1：https://www.openstreetmap.org/#map=15/39.9227/116.3533&layers=O 
 
-想要更好的颜色效果使用着色器材质(ShaderMaterial),着色器需要用到glsl资料这https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_2
+获取全球路网信息方法2：http://www.overpass-api.de/index.html 
 
-在地图上面画沿着一定规定运动的流线效果，获取到轨迹的点，两点之前获取10个点，然后再animate中运动
+
+
 
 
 
