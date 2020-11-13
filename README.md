@@ -5,11 +5,9 @@ three  project
 three.js画地图，可以显示出各个国家在地图的轮廓 
 
 1. 使用到的插件 
-three.js 
-
-OrbitControls.js 
-
-threeBSP.js 
+three.js </br>
+OrbitControls.js </br>
+threeBSP.js </br>
 
 
 2. 基础知识  
@@ -20,22 +18,22 @@ threeBSP.js
 如果想要检测鼠标移动到哪儿了：利用射线Raycaster进行碰撞检测 </br>
 
 3. 功能
-（1） 散点数据：
-    方法1：打开QGIS里面设置随机点（推荐）
-    方法2：使用网址http://geojson.io/#map=2/32.2/18.3在这个里面手动点一些点
-（2）获取路网信息： 
-    方法1：直接打开OpenStreetMap地图网址（），手动圈出范围，下载范围内的路网信息（小范围的可以，类似场馆周围地理信息） 
-    方法2：打开OpenStreetMap的api(http://www.overpass-api.de/index.html),使用以下代码
+（1） 散点数据：</br>
+    方法1：打开QGIS里面设置随机点（推荐）</br>
+    方法2：使用网址http://geojson.io/#map=2/32.2/18.3在这个里面手动点一些点</br>
+（2）获取路网信息： </br>
+    方法1：直接打开OpenStreetMap地图网址（），手动圈出范围，下载范围内的路网信息（小范围的可以，类似场馆周围地理信息） </br>
+    方法2：打开OpenStreetMap的api(http://www.overpass-api.de/index.html),使用以下代码</br>
         在Query and Convert Forms中输入,点击Query获取到<relation id="2782246">这个id;
-        ```
+        ```javascript
         <query type=""relation>
         <has-kv k="boundary" v="administrative">
         <has-kv k="name:zh" v="贵阳市"/>
         </query>
         <print mode="body"/>
         ```
-        同样的页面中输入,ref是3600000000+2782246得到的结果，将这个代码放到Overpass API Convert Form中直接，得到xml的城市路网信息文件
-        ```
+        同样的页面中输入,ref是3600000000+2782246得到的结果，将这个代码放到Overpass API Convert Form中直接，得到xml的城市路网信息文件</br>
+        ```javascript
         <osm-script timeout="1800" element-limit="100000000">
         <union>
             <area-query ref="3602782246"/>
@@ -50,25 +48,21 @@ threeBSP.js
         <print mode="body"/>
         </osm-script>
         ```
-（3）设置线段或者点等任何物体的颜色 
-    使用glsl（https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_2）
+（3）设置线段或者点等任何物体的颜色 </br>
+    使用glsl（https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_2）</br>
 
 
 4. 使用的软件
-代码：vscode
-散点：QGIS
-模型：SketchUp
+代码：vscode</br>
+散点：QGIS</br>
+模型：SketchUp</br>
 
 5. 资料
-three.js文档：http://www.webgl3d.cn/threejs/docs/ 
-
-three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 
-
-获取国内地图数据：http://datav.aliyun.com/tools/atlas/#&lat=30.332329214580188&lng=106.72278672066881&zoom=3.5 
-
-获取全球路网信息方法1：https://www.openstreetmap.org/#map=15/39.9227/116.3533&layers=O 
-
-获取全球路网信息方法2：http://www.overpass-api.de/index.html 
+three.js文档：http://www.webgl3d.cn/threejs/docs/ </br>
+three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
+获取国内地图数据：http://datav.aliyun.com/tools/atlas/#&lat=30.332329214580188&lng=106.72278672066881&zoom=3.5 </br>
+获取全球路网信息方法1：https://www.openstreetmap.org/#map=15/39.9227/116.3533&layers=O </br>
+获取全球路网信息方法2：http://www.overpass-api.de/index.html </br>
 
 
 
