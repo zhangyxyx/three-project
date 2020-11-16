@@ -63,6 +63,9 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 获取国内地图数据：http://datav.aliyun.com/tools/atlas/#&lat=30.332329214580188&lng=106.72278672066881&zoom=3.5 </br>
 获取全球路网信息方法1：https://www.openstreetmap.org/#map=15/39.9227/116.3533&layers=O </br>
 获取全球路网信息方法2：http://www.overpass-api.de/index.html </br>
+将OSM转成json：https://www.bejson.com/xml2json/</br>
+将XML转成shp:https://geoconverter.hsr.ch/vector</br>
+
 
 
 
