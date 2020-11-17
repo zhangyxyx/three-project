@@ -50,7 +50,7 @@ threeBSP.js </br>
         ```</br>
 （3）设置线段或者点等任何物体的颜色 </br>
     使用glsl（https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_2）</br>
-
+（4）加载地图
 
 4. 使用的软件
 代码：vscode</br>
