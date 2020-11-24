@@ -68,6 +68,9 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 将OSM转成json：https://www.bejson.com/xml2json/</br>
 将XML转成shp:https://geoconverter.hsr.ch/vector</br>
 
+6. 问题
+https://stackoverrun.com/cn/q/11494942
+
 
 
 
