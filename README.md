@@ -70,6 +70,10 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 
 6. 问题
 https://stackoverrun.com/cn/q/11494942
+区别：
+    QuadraticBezierCurve3   CubicBezierCurve3
+地球
+    
 
 
 
