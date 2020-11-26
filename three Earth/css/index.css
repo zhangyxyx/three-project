@@ -1,0 +1,403 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+@font-face {
+    font-family: 'UnidreamLED';
+    src:url(./icon/UnidreamLED.eot); /***兼容ie9***/
+    src:url(./icon/UnidreamLED.eot?#iefix)format('embedded-opentype'), /***兼容ie6-ie8***/
+    url('./icon/UnidreamLED.woff') format('woff'),
+    local('UnidreamLED'), url("./icon/UnidreamLED.woff");/***默认使用本地的***/
+}
+p,div,span{
+    letter-spacing:3px;
+
+}
+html{
+    width:1400px;
+    height:800px;
+    overflow:hidden;
+}
+body{
+   width:100%;
+   height:100%;
+
+}
+.main {
+    width: 100%;
+    height: 100%;
+}
+.header{
+    width: 100%;
+    height: 50px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    background: rgba(0,0,0,.3);
+    z-index:3;
+}
+/* .header1{
+    width:calc(50% - 300px);
+    height:30px;
+    background:url('./img/header1.png') no-repeat;
+    background-size:100% 100%;
+    float:left;
+    margin-top:20px;
+}
+.header2{
+    height:30px;
+    width:calc(50% - 300px);
+    background:url('./img/header2.png') no-repeat;
+    background-size:100% 100%;
+    float:left;
+    margin-top:20px;
+} */
+.header3{
+    width: 300px;
+    height: 50px;
+    /* background: url(./img/header3.png) no-repeat; */
+    background-size: 100% 100%;
+    color: #fff;
+    font-size: 25px;
+    line-height: 50px;
+    text-align: center;
+    letter-spacing: 3px;
+    z-index: 2;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+}
+.headerindex{
+    width:1113px;
+    position: absolute;
+    right: 250px;
+    top: 0px;
+    z-index: 4;
+
+}
+.headerindexevery{
+    width: 144px;
+    height: 30px;
+    /* background: #131325cc; */
+    float: left;
+    color: #01f5f6;
+    margin: 0px 10px;
+    padding: 5px;
+    border-radius: 3px;
+    padding-left: 10px;
+    border: 1px solid #01f5f6;
+    text-align:center;
+    margin-top:3px;
+}
+.headerindexevery p{
+    width:100%;
+    height:16px;
+    line-height:16px;
+    font-size:12px;
+    margin-top:-5px;
+
+}
+.headerindexevery p:last-child{
+    font-size:23px;
+    font-family:'UnidreamLED';
+    margin-top:4px;
+}
+.e1 {
+    width: 600px;
+    height: 300px;
+    background: rgba(29, 101, 162, .6);
+}
+
+.echarts_main{
+    width:100%;
+    height:calc(100% - 40px);
+    position:relative;
+}
+.e1_echarts{
+    width:270px;height:100%
+}
+.echarts_main_index_zero{
+    position: absolute;
+    height: 33px;
+    /* background: url(./img/cutovereventgroup2.png) no-repeat;
+    background-size: 100% 100%; */
+    width: 96px;
+    color: #F2CB01;
+    right: 10px;
+    top: 10px;
+    text-align: center;
+    line-height: 40px;
+    font-family: 'UnidreamLED';
+    font-size: 23px;
+}
+.echarts_main_index_one{
+    position: absolute;
+    height: 25px;
+    background: url(./img/cutovereventgroup2.png) no-repeat;
+    background-size: 100% 100%;
+    width: 96px;
+    color: #F2CB01;
+    right: 10px;
+    top: 47px;
+    text-align: center;
+    line-height: 28px;
+    font-family: 'UnidreamLED';
+    font-size: 15px;
+}
+.echarts_main_index_two{
+    position: absolute;
+    height: 25px;
+    background: url(./img/cutovereventgroup3.png) no-repeat;
+    background-size: 100% 100%;
+    width: 68px;
+    color: #E54251;
+    right: 19px;
+    top: 83px;
+    text-align: center;
+    line-height: 28px;
+    font-family: 'UnidreamLED';
+    font-size: 15px;
+}
+.echarts_bottom {
+    /* width: 100%;
+    height: 40px;
+    /* //background: url('./img/cutovereventgroup.png') no-repeat;
+    //background-size:100% 100%; 
+    border:1px solid #01f5f6;
+    line-height: 40px; */
+    width: 100%;
+    height: 30px;
+    border: 1px solid #01f5f6;
+    line-height: 30px;
+    border-radius: 5px;
+
+}
+.echarts_bottom p{
+    width:50%;
+    float:left;
+    color:#fff;
+    text-align:center;
+    font-size:12px;
+}
+.echarts_bottom span {
+    color:#01f5f6;
+    font-size:20px;
+    font-family: 'UnidreamLED';
+}
+.container{
+    width:100%;
+    height:100%;
+    float:left;
+    position:relative;
+}
+.mapbg{
+    position:absolute;
+    left:0px;
+    top:0px;
+    z-index:2;
+    background:url('./img/echarth.png') no-repeat;
+    /* background-position: -100px 60px; */
+    background-size: 100% 100%;
+}
+.map{
+    width:100%;
+    height:100%;
+    position:absolute;
+    left: 0px;
+    top: 0;
+    z-index:3;
+}
+.mapfooter{
+    width:100%;
+    height:calc(100% - 653px);
+    position:absolute;
+    left:0px;
+    bottom:0px;
+    z-index:3;
+}
+.mapfooterone{
+    width:calc(33.3% - 20px);
+    height:100%;
+    margin-left:10px;
+    margin-right:10px;
+    float:left;
+    background: url('./img/rightbg.png') no-repeat;
+    background-size: 100% 100%;
+}
+.mapfootertwo{
+    width:calc(33.3% - 10px);
+    height:100%;
+    margin-right:10px;
+    float:left;
+    background: url('./img/rightbg.png') no-repeat;
+    background-size: 100% 100%;
+}
+.mapfooterthree{
+    width:calc(33.3% - 10px);
+    height:100%;
+    margin-right:10px;
+    float:left;
+    background: url('./img/rightbg.png') no-repeat;
+    background-size: 100% 100%;
+}
+.iconright{
+    width:500px;
+    height:calc(100% - 60px);
+    float:right;
+    position:absolute;
+    right:0px;
+    top:60px;
+    z-index:3;
+    /* background:url('./img/rightbg.png') no-repeat;
+    background-size:100% 100%; */
+}
+
+.alarmicon{
+    width: 100px;
+    height: 31px;
+    position: absolute;
+    right: 135px;
+    top: 10px;
+}
+.webpower{
+    background:url('./img/rightbg.png') no-repeat;
+    background-size:100% 100%;
+    margin-bottom:10px;
+    height:180px;
+}
+.webpowercontent{
+    width:100%;
+    height:calc(100% - 30px);
+    /* background:url('./img/webpower.png') no-repeat;
+    background-size:100% 100%; */
+}
+.cutovereventgroup{
+    width:49%;
+    height:180px;
+    margin-left:1%;
+    float:left;
+    background: url('./img/rightbg.png') no-repeat;
+    background-size: 100% 100%;
+    margin-bottom:10px;
+}
+.relaybackbone{
+    width:49%;
+    height:200px;
+    float:left;
+    margin-bottom:10px;
+    margin-left:1%;
+    background: url('./img/rightbg.png') no-repeat;
+    background-size: 100% 100%;
+}
+.devIndex{
+    width:49%;
+    height:200px;
+    margin-right:1%;
+    float:left;
+    background: url('./img/rightbg.png') no-repeat;
+    background-size: 100% 100%;
+    margin-bottom:10px;
+}
+.devindexBar{
+    width:calc(100% - 10px);
+    height:calc(100% - 30px);
+    /* background:url('./img/cutovereventgroup4.png') no-repeat;
+    background-size:100% 100%; */
+    padding:0px 5px;
+}
+.deviceevery{
+    width:100%;
+    height:calc(20% - 10px);
+    margin:7px 0px;
+    border:1px solid #01f5f6;
+    color:#01f5f6
+}
+.deviceevery p:nth-child(1){
+    width: 10px;
+    float: left;
+    font-size: 12px;
+    margin-left: 5px;
+}
+.deviceevery p:nth-child(2){
+    width:30px;
+    float:left;
+    overflow:hidden;
+    font-size:12px;
+}
+.deviceevery p:nth-child(3){
+    width:calc(100% - 60px);
+    float:left;
+    font-size:12px;
+}
+.deviceevery p:nth-child(3) span{
+    display:block;
+    height:10px;
+    line-height:10px;
+    text-align:center;
+    width:100%;
+    font-size:12px;
+    color:#fff;
+    border-radius:3px;
+    margin:5px;
+    background-image: linear-gradient(to right, #A36EEB , #0A8CAA);
+    font-family:'UnidreamLED';
+}
+.devindexBar_bottom{
+    width: 100%;
+    height: 30px;
+    line-height: 25px;
+    color: #fff;
+    font-size: 14px;
+    display:none;
+}
+.devindexBar_bottom p{
+    letter-spacing: 0px;
+    height:20px;
+    overflow:hidden;
+    width:50%;
+    float:left;
+    text-align:Center;
+}
+.devindexBar_bottom p span{
+    font-family: 'UnidreamLED';
+}
+.backbonerelay{
+    
+    width:49%;
+    height:180px;
+    float:left;
+    margin-bottom:10px;
+    background: url('./img/rightbg.png') no-repeat;
+    background-size: 100% 100%;
+    margin-right:1%;
+
+}
+.webpowercontentearth{
+    width: 130px;
+    height: 90px;
+    position: absolute;
+    right: 45px;
+    top: 40px;
+    padding: 10px;
+    background: url(./img/earth3d3.png) no-repeat;
+    background-size: 100% 100%;
+    /* margin-left: -57px; */
+    /* margin-top: -48px;*/
+}
+#provinceInfo {
+    position: absolute;
+    top:0px;
+    left:0px;
+    z-index: 2;
+    background: white;
+    padding: 10px;
+    visibility: hidden;
+  }
+  .showright{
+      position:absolute;
+      top:20px;
+      right:10px;
+      color:#fff;
+      cursor:pointer;
+  }
