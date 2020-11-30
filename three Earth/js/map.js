@@ -27,7 +27,7 @@ function getearthdata() {
         {
             end: "香港",
             endcode: "N0001",
-            linedesc: "",
+            linedesc: "这是提示信息",
             linestat: 0,
             start: "法兰克福",
             startcode: "N0012",
@@ -297,7 +297,7 @@ function earth3D(nodeindex, linearray) {
         scene.add(aGroup);
         animationLine();
         // 渲染
-        console.log(scene)
+
         render();
         setText()
         window.addEventListener("mousemove", onDocumentMouseOver, false)
@@ -337,11 +337,11 @@ function earth3D(nodeindex, linearray) {
         var x = (x / width) * 2 - 1;
         var y = -(y / height) * 2 + 1;
         mouseVector.set(x, y);
-        console.log(mouseVector)
+
         //通过摄像机和鼠标位置更新射线
         raycaster.setFromCamera(mouseVector, camera);
         // 返回物体和射线的焦点
-        console.log(scene.children)
+
         return raycaster.intersectObjects(scene.children, true)
     }
     var createProvinceInfo = function (activeInstersect) { // 显示省份的信息  

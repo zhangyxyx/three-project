@@ -390,9 +390,10 @@ body{
     top:0px;
     left:0px;
     z-index: 2;
-    background: white;
+    background:#000;
     padding: 10px;
     visibility: hidden;
+    color:red;
   }
   .showright{
       position:absolute;
