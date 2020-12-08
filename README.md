@@ -69,13 +69,14 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 将XML转成shp:https://geoconverter.hsr.ch/vector</br>
 
 6. 问题
-https://stackoverrun.com/cn/q/11494942
+https://stackoverrun.com/cn/q/11494942</br>
 区别：
-    QuadraticBezierCurve3   CubicBezierCurve3
-地球
-建筑
-热力图
-glsl
+    QuadraticBezierCurve3 </br>  CubicBezierCurve3</br>
+地球</br>
+建筑</br>
+热力图</br>
+glsl</br>
+https://thebookofshaders.com/?lan=ch</br>
     
 
 
