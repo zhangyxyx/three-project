@@ -50,9 +50,9 @@ threeBSP.js </br>
         ```</br>
 （3）设置线段或者点等任何物体的颜色 </br>
     使用glsl（https://learnopengl-cn.github.io/01%20Getting%20started/05%20Shaders/#_2）</br>
-（4）加载地图
-（5）说一下SketchUp
-    如果想做一个建筑，那么就需要纹理，纹理的话可以采用材质，材质里面可以贴图片也可以直接设置纯色
+（4）加载地图</br>
+（5）说一下SketchUp</br>
+    如果想做一个建筑，那么就需要纹理，纹理的话可以采用材质，材质里面可以贴图片也可以直接设置纯色</br>
 
 4. 使用的软件
 代码：vscode</br>
@@ -71,7 +71,8 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 6. 问题
 https://stackoverrun.com/cn/q/11494942</br>
 区别：
-    QuadraticBezierCurve3 </br>  CubicBezierCurve3</br>
+    QuadraticBezierCurve3 </br>  
+    CubicBezierCurve3</br>
 地球</br>
 建筑</br>
 热力图</br>
