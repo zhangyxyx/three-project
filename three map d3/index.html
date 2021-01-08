@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地图</title>
+    <style>
+        body {
+            background: #fcfcfa;
+          }
+          
+          .stroke {
+            fill: none;
+            stroke: #000;
+            stroke-width: 3px;
+          }
+          
+          .fill {
+            fill: #fff;
+          }
+          
+          .graticule {
+            fill: 'red';
+          }
+          
+          .land {
+            fill: #77c9fe;
+            
+          }
+          
+          .boundary {
+            fill: none;
+            stroke: #fff;
+            stroke-dasharray: 10;
+            stroke-width: .5px;
+          }
+    </style>
+</head>
+
+
+<body>
+
+</body>
+<script src="./js/jquery-1.8.0.min.js"></script>
+<script src="//d3js.org/d3.v3.js"></script>
+<script src="//d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script src="./js/data.js"></script>
+<script>
+var svg
+var projection
+$(function(){
+    renderMap()
+    renderPoint()
+    renderLine()
+})
+function renderMap(){
+    var width = 960,
+    height = 500;
+
+    projection = d3.geo.mollweide()
+    .scale(165)
+    .translate([width / 2, height / 2])
+    .precision(.1);
+
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var graticule = d3.geo.graticule();
+
+    svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // svg.append("defs").append("path")
+    //     .datum({type: "Sphere"})
+    //     .attr("id", "sphere")
+    //     .attr("d", path);
+
+    // svg.append("use")
+    //     .attr("class", "stroke")
+    //     .attr("xlink:href", "#sphere");
+
+    // svg.append("use")
+    //     .attr("class", "fill")
+    //     .attr("xlink:href", "./css/bg.png");
+
+    svg.append("path")
+        .datum(graticule)
+        .attr("class", "graticule")
+        .attr("d", path);
+
+
+    d3.select(self.frameElement).style("height", height + "px");
+}
+
+</script>
+
+</html>

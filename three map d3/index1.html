@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>地图</title>
+    <style>
+        body {
+            background: #fcfcfa;
+          }
+          
+          .stroke {
+            fill: none;
+            stroke: #000;
+            stroke-width: 3px;
+          }
+          
+          .fill {
+            fill: #fff;
+          }
+          
+          .graticule {
+            fill: none;
+            stroke: none;
+            stroke-width: .5px;
+            stroke-opacity: .5;
+            background:url('./css/bg.png')
+          }
+          
+          .land {
+            fill: #77c9fe;
+            
+          }
+          
+          .boundary {
+            fill: none;
+            stroke: #fff;
+            stroke-dasharray: 10;
+            stroke-width: .5px;
+          }
+    </style>
+</head>
+
+
+<body>
+
+</body>
+<script src="./js/jquery-1.8.0.min.js"></script>
+<script src="//d3js.org/d3.v3.js"></script>
+<script src="//d3js.org/d3.geo.projection.v0.min.js"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script src="./js/data.js"></script>
+<script>
+var svg
+var projection
+$(function(){
+    renderMap()
+    renderPoint()
+    renderLine()
+})
+function renderMap(){
+    var width = 960,
+    height = 500;
+
+    projection = d3.geo.mollweide()
+    .scale(165)
+    .translate([width / 2, height / 2])
+    .precision(.1);
+
+    var path = d3.geo.path()
+        .projection(projection);
+
+    var graticule = d3.geo.graticule();
+
+    svg = d3.select("body").append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    // svg.append("defs").append("path")
+    //     .datum({type: "Sphere"})
+    //     .attr("id", "sphere")
+    //     .attr("d", path);
+
+    // svg.append("use")
+    //     .attr("class", "stroke")
+    //     .attr("xlink:href", "#sphere");
+
+    // svg.append("use")
+    //     .attr("class", "fill")
+    //     .attr("xlink:href", "./css/bg.png");
+
+    svg.append("path")
+        .datum(graticule)
+        .attr("class", "graticule")
+        .attr("d", path);
+
+    d3.json("./js/world1.json", function(error, world) {
+    if (error) throw error;
+
+        svg.insert("path", ".graticule").datum(topojson.feature(world, world.objects.land)).attr("class", "land").attr("d", path);
+
+        svg.insert("path", ".graticule")
+            .datum(topojson.mesh(world, world.objects.countries, function(a, b) { return a !== b; }))
+            .attr("class", "boundary")
+            .attr("d", path);
+    });
+
+    d3.select(self.frameElement).style("height", height + "px");
+}
+//地图上面画点
+function renderPoint(){
+    var points = pointData.features;          
+    var coo = function(d){
+        var lngLat = d.geometry.coordinates;
+        var coo = projection(lngLat);
+        return coo;
+    }
+    svg.selectAll('circle').data(points).enter().append('circle').attr("class", "point")
+        .attr("cx", function(d){
+            return coo(d)[0];
+        })
+        .attr("cy", function(d){
+            return coo(d)[1];
+        })
+        .attr("fill", "#ff9")
+        .attr("r", 4);
+}
+//地图上面画线
+function renderLine(){
+    var lines = LineData;        
+    var coo = function(d){
+        var lngLat = d
+        var coo = projection(lngLat);
+        return coo;
+    }
+    svg.append('g')
+        .selectAll('line')
+        .data(lines)
+        .enter()
+        .append('line')
+        .attr("stroke", "#ff9")
+        .attr('class', 'line')
+        .attr('x1', function(d) {
+            return coo(d.source)[0];
+        })
+        .attr('y1', function(d) {
+            return coo(d.source)[1];
+        })
+        .attr('x2', function(d) {
+            return coo(d.target)[0];
+        })
+        .attr('y2', function(d) {
+            return coo(d.target)[1];
+        });
+}
+
+</script>
+
+</html>
