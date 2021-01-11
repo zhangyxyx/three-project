@@ -96,7 +96,7 @@ function renderMap(){
         .attr("d", path);
 
     d3.json("./js/world1.json", function(error, world) {
-    if (error) throw error;
+        if (error) throw error;
 
         svg.insert("path", ".graticule").datum(topojson.feature(world, world.objects.land)).attr("class", "land").attr("d", path);
 
