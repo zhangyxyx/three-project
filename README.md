@@ -86,6 +86,9 @@ https://thebookofshaders.com/?lan=ch</br>
 ## D3.js
 1. 弯曲的地图
 three map d3    </br>
+2. 资料：
+https://blog.csdn.net/qq_31052401/article/details/88937832
+https://bl.ocks.org/mbostock
 
 ## 处理osm
 ### npm install -g osmtogeojson
