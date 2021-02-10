@@ -1,6 +1,9 @@
 # three-project
 three  project 
 
+## three build
+可以引入模型的
+
 ## three.js
 
 ## three map
