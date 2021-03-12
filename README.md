@@ -16,11 +16,56 @@ threeBSP.js </br>
 
 
 2. 基础知识  
+> 基础知识
 需要知道基本的概念：场景 照相机 灯光 渲染器 </br>
 获取到/data/world1.json世界地图的基本数据，使用ExtrudeGeometry几个体绘制出地图的基本轮廓，至于地图的颜色是否倾斜，就可以根据自己实际需求进行设置 </br>
 我们想在地图上画出国家的名称：用到的是TextGeometry,需要注意的是如果是中文显示需要另外load一下js/three/MicrosoftYaHei_Regular.json这个文件</br>
 在地图上面显示点和线的时候：几何体都可以，目前这里面用倒的是SphereGeometry </br> 
 如果想要检测鼠标移动到哪儿了：利用射线Raycaster进行碰撞检测 </br>
+
+> 分部解析
++ 阴影
+render中告知需要有阴影:renderer.shadowMapEnabled=true
+然后需要定义哪个物体投射阴影，哪个物体接收阴影：plane.receiveShadow=true cube.castShadow=true
+告知哪个光源可以产生阴影：spotLight.castShdow=true
++ 动画
+用requestAnimationFrame(),利用这个方法我们可以旋转方块
+```
+function renderScene(){
+    cube.rotation.x+=0.2
+    cube.rotation.y+=0.2
+    cube.rotation.z+=0.2
+    requestAnimationFrame(renderScene)
+    renderer.render(scene.camera)
+}
+```
+我们可以通过Stat监控每秒显示的帧数FPS
++ 场景
+Scene包含全部需要的东西</br>
+scend.add()将物体添加到场景中</br>
++ 相机
+正投影 物体不管远近都是一样的大小 new THREE.PersepectiveCamera()
+透视 近大远小 尽量用这种    new THREE.OrthographicCamera()
+我们的相机一般指向中心点 camera.lookAt(new THREE.Vector3(x,y,z))
++ 光源
+AmbientLight 基础光源 不能产生阴影 不用设置位置 不能单独使用，需要和其他光源合并使用 主要为了给物体添加光源颜色 
+PointLight 点光源  不会产生阴影 可以设置位置 
+SpotLight 聚光灯光源 类似天花板的吊灯 产生阴影的时候最好用这个 可以设置位置 
+DirectionalLight 方向光 光源是平行的 类似太阳光
+HemisphereLight 半球光 可以模拟光线微弱的天空
+AreaLight 面光源
+LensFlare 镜头眩光
++ 纹理
+纹理就好像皮肤一样
+MeshBasicMaterial
+MeshDepthMaterial 外观的深浅由物体到相机的距离决定的 MeshDepthMaterial可以结合MeshBasicmaterial进行联合材质
+MeshNormalMaterial 计算法向颜色
+MeshFaceMaterial 材质容器 可以对几何体每一个面指定不用的材质
+MeshLamberMaterial 用于暗淡 不光亮表面
+MeshPhongMaterial 用于光亮的材质
++ 射线
+当我们选中某个元素的时候,使用Raycaster
+
 
 3. 功能
 （1） 散点数据：</br>
@@ -74,6 +119,7 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 获取全球路网信息方法2：http://www.overpass-api.de/index.html </br>
 将OSM转成json：https://www.bejson.com/xml2json/</br>
 将XML转成shp:https://geoconverter.hsr.ch/vector</br>
+dat.GUI简单的界面组件，控制属性 
 
 6. 问题
 https://stackoverrun.com/cn/q/11494942</br>
