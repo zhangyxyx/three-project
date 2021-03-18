@@ -236,9 +236,14 @@ function earthfunc() {
 
         return mesh;
     };
+    /*
+    ModelViewMatrix:模型矩阵
+    ProjectionMatrix:投影矩阵
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 20.0) //值越大 圆圈半径越大
+    */
     window.BreathPulse = function (opacity, radius, color) {
         const vertexShader = `
-        precision lowp float;
+        precision lowp float; 
         precision lowp int;
         #include <fog_pars_vertex>
         varying vec2 vUv;
@@ -465,7 +470,7 @@ function earthfunc() {
         // 初始化相机
         camera = new THREE.PerspectiveCamera(30, dom.clientWidth / dom.clientHeight, 1, 100000);
         // 设置相机位置
-        camera.position.set(0, 50, 500);
+        camera.position.set(0, 50, 100);
         renderer = new THREE.WebGLRenderer({
             alpha: true,
             antialias: true
