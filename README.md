@@ -114,6 +114,8 @@ MeshPhongMaterial 用于光亮的材质
 5. 资料
 glsl文档：https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLProgram
 glsl例子：http://www.geeks3d.com/
+glsl文档：https://thebookofshaders.com/06/?lan=ch
+着色器：https://thebookofshaders.com/?lan=ch
 three.js文档：http://www.webgl3d.cn/threejs/docs/ </br>
 three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 获取国内地图数据：http://datav.aliyun.com/tools/atlas/#&lat=30.332329214580188&lng=106.72278672066881&zoom=3.5 </br>
