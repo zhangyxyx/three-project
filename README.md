@@ -13,7 +13,7 @@ three.js画地图，可以显示出各个国家在地图的轮廓
 
 ![Image text](./project/demo.gif)
 
-## 资料
+## 基础知识
 1. 使用到的插件 
 three.js </br>
 OrbitControls.js </br>
