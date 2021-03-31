@@ -10,7 +10,7 @@ three  project
 three.js画地图，可以显示出各个国家在地图的轮廓 
 
 ## project
-![image](https://github.com/zhangyxyx/three-project/tree/main/project/demo.gif)
+![image](https://github.com/zhangyxyx/three-project/main/project/demo.gif)
 
 1. 使用到的插件 
 three.js </br>
