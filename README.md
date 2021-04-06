@@ -70,6 +70,9 @@ MeshLamberMaterial 用于暗淡 不光亮表面
 MeshPhongMaterial 用于光亮的材质
 + 射线
 当我们选中某个元素的时候,使用Raycaster
++ 控制器
++ GUI
++ stat
 
 
 3. 功能
