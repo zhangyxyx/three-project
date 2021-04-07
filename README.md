@@ -131,7 +131,8 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 获取全球路网信息方法2：http://www.overpass-api.de/index.html </br>
 将OSM转成json：https://www.bejson.com/xml2json/</br>
 将XML转成shp:https://geoconverter.hsr.ch/vector</br>
-dat.GUI简单的界面组件，控制属性 
+dat.GUI简单的界面组件，控制属性</br>
+计算动画函数 http://www.createjs.cc/tweenjs/ </br>
 
 6. 问题
 https://stackoverrun.com/cn/q/11494942</br>
