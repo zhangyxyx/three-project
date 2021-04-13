@@ -134,7 +134,8 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 dat.GUI简单的界面组件，控制属性</br>
 计算动画函数 http://www.createjs.cc/tweenjs/ </br>
 mapbox 插件</br>
-maptalk </br>
+maptalk添加网络地图 </br>
+
 
 6. 问题
 https://stackoverrun.com/cn/q/11494942</br>
