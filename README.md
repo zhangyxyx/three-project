@@ -135,6 +135,7 @@ dat.GUI简单的界面组件，控制属性</br>
 计算动画函数 http://www.createjs.cc/tweenjs/ </br>
 mapbox 插件</br>
 maptalk添加网络地图 </br>
+cesium地图</br>
 
 
 6. 问题
