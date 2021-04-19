@@ -133,9 +133,9 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 将XML转成shp:https://geoconverter.hsr.ch/vector</br>
 dat.GUI简单的界面组件，控制属性</br>
 计算动画函数 http://www.createjs.cc/tweenjs/ </br>
-mapbox 插件</br>
-maptalk添加网络地图 </br>
-cesium地图</br>
+mapbox 插件http://www.mapbox.cn/</br>
+maptalk添加网络地图https://maptalks.org/examples/cn/map/load/ </br>
+cesium地图https://cesium.com/platform/cesiumjs/</br>
 
 
 6. 问题
