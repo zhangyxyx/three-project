@@ -134,11 +134,11 @@ three.js案例：http://www.webgl3d.cn/threejs/examples/ 建议down下来 </br>
 dat.GUI简单的界面组件，控制属性</br>
 计算动画函数 http://www.createjs.cc/tweenjs/ </br>
 mapbox 插件http://www.mapbox.cn/</br>
-    优点：功能齐备 支持移动端 地图样式可以个性化
-     缺点：地图不可以离线 英文文档 没有功能性的实例
+    优点：功能齐备 支持移动端 地图样式可以个性化</br>
+     缺点：地图不可以离线 英文文档 没有功能性的实例</br>
 maptalk添加网络地图https://maptalks.org/examples/cn/map/load/ </br>
-    优点：实例多 中文文档
-     缺点：地图不可以离线 地图样式不可以个性化
+    优点：实例多 中文文档</br>
+     缺点：地图不可以离线 地图样式不可以个性化</br>
 cesium地图https://cesium.com/platform/cesiumjs/</br>
 requestAnimationFrame   cancelAnimationFrame</br>
 
