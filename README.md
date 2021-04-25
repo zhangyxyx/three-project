@@ -140,7 +140,7 @@ maptalk添加网络地图https://maptalks.org/examples/cn/map/load/ </br>
     优点：实例多 中文文档</br>
      缺点：地图不可以离线 地图样式不可以个性化</br>
 cesium地图https://cesium.com/platform/cesiumjs/</br>
-requestAnimationFrame   cancelAnimationFrame</br>
+</br>
 
 
 6. 问题
@@ -154,6 +154,7 @@ https://stackoverrun.com/cn/q/11494942</br>
 glsl</br>
 https://thebookofshaders.com/?lan=ch</br>
 想要修改道路的颜色可以将mapbox作为底图</br>
+自动旋转的时候需要注意这两个函数requestAnimationFrame   cancelAnimationFrame</br>
 
 ## D3.js
 1. 弯曲的地图
