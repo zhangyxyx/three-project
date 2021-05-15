@@ -140,7 +140,7 @@ maptalk添加网络地图https://maptalks.org/examples/cn/map/load/ </br>
     优点：实例多 中文文档</br>
      缺点：地图不可以离线 地图样式不可以个性化</br>
 cesium地图https://cesium.com/platform/cesiumjs/</br>
-地图
+地图模型
 
 
 
