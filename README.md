@@ -117,7 +117,7 @@ MeshPhongMaterial 用于光亮的材质
 4. 使用的软件
 代码：vscode</br>
 散点：QGIS</br>
-模型：SketchUp</br>
+模型：SketchUp 3DMAX</br>
 
 5. 资料
 glsl文档：https://developer.mozilla.org/zh-CN/docs/Web/API/WebGLProgram
