@@ -4,7 +4,6 @@ three  project
 ## three build
 可以引入模型的
 
-## three.js
 
 ## three map
 three.js画地图，可以显示出各个国家在地图的轮廓 
