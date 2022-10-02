@@ -1,22 +1,25 @@
 # threejs知识点
 
 *  线宽度设置
-
 ```JavaScript
-var textureLoader = new THREE.TextureLoader();
-var plane = new THREE.PlaneGeometry(40, 40); // 创建一个矩形几何体
-//标签使用基础网格材质即可
-var planeMaterial = new THREE.MeshBasicMaterial({
-  //矩形平面网格模型设置纹理贴图
-  map: textureLoader.load('./标签图片/红豆.png'),
-  side: THREE.DoubleSide, // 双面显示
-  transparent: true, // 开启透明效果，否则颜色贴图map的透明不起作用
-});
-var planeMesh = new THREE.Mesh(plane, planeMaterial);
-// mesh网格模型表示一个红豆的仓库
-planeMesh.position.copy(mesh.position)
-planeMesh.position.y += 80
-scene.add(planeMesh)
+import * as THREE from 'three'
+import OrbitControls from 'three-orbitcontrols'
+import { Line2 } from 'three/examples/jsm/lines/Line2'
+import { LineGeometry } from 'three/examples/jsm/lines/LineGeometry'
+import { LineMaterial } from 'three/examples/jsm/lines/LineMaterial'
+
+var geometry = new LineGeometry()
+var pointArr = [-100, 0, 0,-100, 100, 0]
+geometry.setPositions(pointArr)
+var material = new LineMaterial({
+        color: "red",
+        linewidth: 15
+      })
+material.resolution.set(window.innerWidth, window.innerHeight)
+var line = new Line2(geometry, material)
+line.computeLineDistances()
+scene.add(line)
+
 ```
 *  阴影设置
 ```JavaScript
