@@ -357,6 +357,7 @@ map.minFilter  = THREE.LinearMipMapLinearFilter
 
 ```
 * 设置场景比例
+
 * 纹理透明度设置
 ```JavaScript 
 material.transparent = true;//是否透明
@@ -364,7 +365,49 @@ material.opacity = 0.9;//透明度
 
 ```
 * tween对元素的移动和转动角度
+```JavaScript 
+//前后左右移动
+var tween =new TWEEN.Tween( this.camera.position ).to( {x:0,y:10,z:-40},1000 ).start() 
+
+//物体旋转
+var jiexie1=new TWEEN.Tween(data.rotation).to( { z: (90 * Math.PI / 180)},5000 ).start()
+var jiexie2 =  new TWEEN.Tween(data.rotation).to({ z: (0 * Math.PI / 180)},2000)  
+jiexie1.chain(jiexie2); 
+jiexie2.chain(jiexie1); 
+
+//物体多个运动连续
+var agv1=new TWEEN.Tween(data.position).to(pos1,9000+8000 )
+agv1.onComplete(function(){})
+var agv2=new TWEEN.Tween(data.position ).to( pos2,5000+8000 )
+agv2.onComplete(function(){})
+var agv3=new TWEEN.Tween(data.position ).to( pos3,10000+8000 )
+agv2.onComplete(function(){})
+var agv4=new TWEEN.Tween(data.position ).to( pos4,5000+8000 )  
+var agv5=new TWEEN.Tween(data.position ).to( pos5,1000+8000 ) 
+
+agv1.start()
+agv1.chain(agv2); 
+agv2.chain(agv3); 
+agv3.chain(agv4); 
+agv4.chain(agv5); 
+agv5.chain(agv1);
+
+
+
+```
+
 * 第一人称运动
+```JavaScript 
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'; 
+var tween1=new TWEEN.Tween( camera.position ).to( {x:data.position.x+0.05 ,y:data.position.y+0.01,z:data.position.z},4000 ).start() 
+tween1.onUpdate(function() {  
+  that.controls.target.x =pos.x-0.05;
+  that.controls.target.y =pos.y;
+  that.controls.target.z =pos.z;
+  that.controls.update();
+})
+
+``` 
 * 镜面反射效果
 ```JavaScript 
 import { Reflector } from 'three/examples/jsm/objects/Reflector.js'; 
@@ -389,13 +432,40 @@ renderplane(){
 ```
 * canvas透明度设置
 * tween顺时针旋转
+```JavaScript 
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'; 
+var jiexie1=new TWEEN.Tween(data.rotation).to( { z: (90 * Math.PI / 180)},5000 ).start()
+var jiexie2 =  new TWEEN.Tween(data.rotation).to({ z: (0 * Math.PI / 180)},2000)  
+jiexie1.chain(jiexie2); 
+jiexie2.chain(jiexie1); 
+
+``` 
+
 * tween停止
-* tween时间分配
+```JavaScript 
+import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js'; 
+ 
+for(var i=0;i<tweenarr.length;i++){
+  tweenarr[i].stop()
+} 
+
+``` 
+ 
 * camera转换角度 controls转换角度
 * 平面网格
+* 正方体 平面
 * 模型变线框
 * shader中渐变效果
 * 模型循环遍历
+```JavaScript 
+model.traverse( function ( object ) {
+    if ( object.isMesh ) {   
+      object.material1=object.material  
+    } 
+});
+
+``` 
+
 * 对模型重定位到原点
 * 设置模型缩放、位置、旋转
 * 面积灯光使用
