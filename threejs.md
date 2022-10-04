@@ -453,6 +453,17 @@ for(var i=0;i<tweenarr.length;i++){
  
 * camera转换角度 controls转换角度
 * 平面网格
+```JavaScript 
+ size -- 网格宽度，默认为 10. 
+divisions -- 等分数，默认为 10. 
+colorCenterLine -- 中心线颜色，默认 0x444444 
+colorGrid --  网格线颜色，默认为 0x888888
+
+var gridHelper = new THREE.GridHelper( 100, 30, 0x2C2C2C, 0x888888 );
+scene.add(gridHelper);
+
+``` 
+
 * 正方体 平面
 * 模型变线框
 * shader中渐变效果
@@ -467,9 +478,93 @@ model.traverse( function ( object ) {
 ``` 
 
 * 对模型重定位到原点
+```JavaScript 
+var model= gltf.scene
+gltf.scene.scale.set(0.09,0.09,0.09)
+var box3 = new THREE.Box3();
+box3.expandByObject(gltf.scene); // 计算模型包围盒
+var center = new THREE.Vector3();
+box3.getCenter(center); // 计算一个层级模型对应包围盒的几何中心坐标
+//重新设置模型的位置  222.78981445312502, y: 33.70293766691505, z: -52.16312988204231
+gltf.scene.position.x=-160//-=center.x;
+gltf.scene.position.y=0//-=center.y;
+gltf.scene.position.z=-10//-=center.z;
+```
+
+
 * 设置模型缩放、位置、旋转
-* 面积灯光使用
+```JavaScript 
+//移动
+mesh.position.x = 100;
+mesh.position.y = 100;
+mesh.position.z = 100; 
+mesh.position.set(100, 100, 100);
+
+//缩小 
+mesh.scale.set(2, 1.5, 2);
+
+//旋转
+// 沿着XYZ分别旋转45°
+mesh.rotation.x = Math.PI/4;
+mesh.rotation.y = Math.PI/4;
+mesh.rotation.z = Math.PI/4;
+// 或者
+mesh.rotateX(Math.PI/4)
+mesh.rotateY(Math.PI/4)
+mesh.rotateZ(Math.PI/4)
+```
+
 * 获取模型大小
+```JavaScript 
+const box3 = new THREE.Box3()
+box3.expandByObject(gltf.scene)
+const v3 = new THREE.Vector3()
+box3.getSize(v3)
+```
+ 
 * 相机控制器的指向
+```JavaScript 
+var tween1=new TWEEN.Tween( camera.position ).to( {x:data.position.x+0.05 ,y:data.position.y+0.01,z:data.position.z},4000 ).start() 
+tween1.onUpdate(function() {  
+  that.controls.target.x =pos.x-0.05;
+  that.controls.target.y =pos.y;
+  that.controls.target.z =pos.z;
+  that.controls.update();
+})
+```
+
+
 * 射线与相机位置
+```JavaScript 
+window.addEventListener( 'click', choose, false ); 
+function choose(event) { 
+  var arr=[]
+  var data=that.scene.children //之选中某些模型
+  for(var i=0;i<data.length;i++){ 
+    if(data[i].type3d==='设备'){
+      arr.push(data[i])
+        var res1=data[i].children[0].children
+        for(var j=0;j<res1.length;j++){
+        arr.push(res1[j]) 
+        }
+    }
+  } 
+
+  var Sx = event.clientX;  
+  var Sy = event.clientY;  
+  var width = window.innerWidth;  
+  var height =window.innerHeight;  
+  var container=document.getElementById('threemap')//在当亲div中获取元素
+  let getBoundingClientRect = container.getBoundingClientRect()
+
+  var x = ((event.clientX - getBoundingClientRect .left) / container.offsetWidth) * 2 - 1;
+  var y = -((event.clientY - getBoundingClientRect .top) / container.offsetHeight) * 2 + 1;  
+  var raycaster = new THREE.Raycaster(); 
+  raycaster.setFromCamera(new THREE.Vector2(x, y), that.camera); 
+  var intersects = raycaster.intersectObjects(arr);
+
+  if (intersects.length > 0) {}
+} 
+
+```
 
