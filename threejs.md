@@ -452,6 +452,16 @@ for(var i=0;i<tweenarr.length;i++){
 ``` 
  
 * camera转换角度 controls转换角度
+```JavaScript 
+//camera
+var tween1=new TWEEN.Tween( camera.position ).to( {x:1,y:1,z:1.5},4000 ).start()
+//controls
+that.controls.target.x = 1;
+that.controls.target.y = 0;
+that.controls.target.z = 0;
+that.controls.update();
+
+``` 
 * 平面网格
 ```JavaScript 
  size -- 网格宽度，默认为 10. 
