@@ -110,7 +110,16 @@ rectLight1.position.set(0.6 ,0.5, 0);
 rectLight1.lookAt(0.6,0,0);
 rectLight1.distance =20 //距离
 this.scene.add(rectLight1); 
-
+let rectLight1=new THREE.RectAreaLight(0xffffff,1.6,1.5,1);
+rectLight1.position.set(0 ,0.5, 0);
+rectLight1.lookAt(0 , 0,0);
+rectLight1.distance =20
+scene.add(rectLight1); 
+var rectLightMesh1 = new THREE.Mesh( new THREE.PlaneBufferGeometry(), new THREE.MeshBasicMaterial( {side:THREE.DoubleSide} ) );
+rectLightMesh1.scale.x = rectLight1.width;
+rectLightMesh1.scale.y = rectLight1.height;
+rectLight1.add(rectLightMesh1);//平面缓冲几何体替代平面光光源位置
+      
 //自然光
 const light = new THREE.AmbientLight( 0x000000 ); 
 this.scene.add( light );
