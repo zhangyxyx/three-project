@@ -534,8 +534,43 @@ divisions -- 等分数，默认为 10.
 colorCenterLine -- 中心线颜色，默认 0x444444 
 colorGrid --  网格线颜色，默认为 0x888888
 
-var gridHelper = new THREE.GridHelper( 100, 30, 0x2C2C2C, 0x888888 );
-scene.add(gridHelper);
+var rangeSize = 2000; //地面网格尺寸
+var divisions = 200; //地面网格细分数
+var gridHelper = new THREE.GridHelper(rangeSize, divisions, '#01293d', '#042d42');
+this.scene.add(gridHelper); 
+
+that.CreateGroundGrid(100, 300, 0x004444, 0.08, 0x00aaaa)
+ CreateGroundGrid(rangeSize, divisions, color, R, RColor) {
+  var THREE=this.THREE 
+  var group = new THREE.Group();
+  var gridHelper = new THREE.GridHelper(rangeSize, divisions, color, color);
+  group.add(gridHelper);
+  // console.log('gridHelper',gridHelper)
+  gridHelper.material.depthWrite = false;
+  gridHelper.renderOrder = -2;
+  // CircleGeometry圆形平面几何体
+  var geometry = new THREE.CircleGeometry(R, 20, 20);
+  geometry.rotateX(Math.PI / 2); //从XOY平面旋转到XOZ平面
+  // 可以选择基础网格材质，基础网格材质不受光照影响，和其它场景配合，颜色更稳定，而且节约渲染资源
+  var material = new THREE.MeshBasicMaterial({
+    color: RColor,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+  });
+  // 共享材质和几何体数据，批量创建圆点mesh
+  var 间距 = rangeSize / divisions
+  var 范围一半 = rangeSize / 2
+  for (let i = 0; i < divisions; i++) {
+    for (let j = 0; j < divisions; j++) {
+    var mesh = new THREE.Mesh(geometry, material);
+    mesh.renderOrder = -1;
+    mesh.translateX(-范围一半 + i * 间距);
+    mesh.translateZ(-范围一半 + j * 间距);
+    group.add(mesh)
+    }
+  }
+  this.scene.add(group)
+},
 
 ``` 
 
