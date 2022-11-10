@@ -38,6 +38,62 @@ mesh.receiveShadow = true // 接受阴影
 
 ```
 
+*  发光
+```JavaScript
+
+/*后期处理*/
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js';
+import { CopyShader } from 'three/examples/jsm/shaders/CopyShader.js';
+import { FXAAShader } from 'three/examples/jsm/shaders/FXAAShader.js';
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'; 
+renderPassFunc(mesharr){ 
+        var that=this
+        var THREE=this.THREE
+        this.renderPass1=''
+        this.OutlinePass1=''
+        if(that.LoopId!=''){
+                cancelAnimationFrame(that.LoopId) 
+        }
+        var that=this
+        // 创建一个渲染器通道，场景和相机作为参数
+        this.renderPass1 = new RenderPass(this.scene, this.camera); 
+        // 创建OutlinePass通道,显示外轮廓边框
+        this.OutlinePass1 = new OutlinePass(new THREE.Vector2(window.innerWidth, window.innerHeight), this.scene,this.camera,mesharr);
+        // 后处理完成，设置renderToScreen为true，后处理结果在Canvas画布上显示
+        this.OutlinePass1.renderToScreen = true;
+
+        //OutlinePass相关属性设置
+        this.OutlinePass1.visibleEdgeColor.set('0x1A92C6');//模型描边颜色，默认白色          
+        this.OutlinePass1.edgeThickness = 4.0;//轮廓边缘描边厚度
+        this.OutlinePass1.edgeStrength = 6.0;//边缘发光强度,数值大，更亮一些
+        // OutlinePass.pulsePeriod = 2;//模型闪烁频率控制，默认0不闪烁
+        // OutlinePass.hiddenEdgeColor.set(0x220101);//模型被遮挡部分描边颜色控制        
+        // OutlinePass.edgeGlow = 0.0;//边缘发光，默认0.0
+        // OutlinePass.downSampleRatio = 2;//下采样比,默认2
+        // OutlinePass.usePatternTexture = false;//纹理,默认false
+
+        //后期处理  
+                        var composer = new EffectComposer(this.renderer); 
+        composer.setSize(window.innerWidth, window.innerHeight);
+                        composer.addPass(this.renderPass1);// 设置renderPass通道 
+                        composer.addPass(this.OutlinePass1);// 设置OutlinePass通道
+
+        composer.readBuffer.texture.encoding = THREE.sRGBEncoding;
+        composer.writeBuffer.texture.encoding = THREE.sRGBEncoding;
+
+
+        passrender()
+        function passrender(){
+                composer.render();  
+                that.LoopId=requestAnimationFrame(passrender); 
+        }
+},
+
+```
+
+
 * FBX引入 
 ```JavaScript
 import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js';
