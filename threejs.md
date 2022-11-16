@@ -739,6 +739,39 @@ scene.add(targetObject);
 light.target = targetObject;
 
 ```
+
+
+* 控制器重置
+```JavaScript 
+that.controls.reset();
+
+```
+
+* 经纬度转化为球面坐标
+```JavaScript 
+    createPosition(lnglat) { 
+      let spherical = new THREE.Spherical
+      spherical.radius = this.radius;
+      const lng = lnglat[0]
+      const lat = lnglat[1]
+      const theta = (lng + 90) * (Math.PI / 180)
+      const phi = (90 - lat) * (Math.PI / 180)
+      spherical.phi = phi; // phi是方位面（水平面）内的角度，范围0~360度
+      spherical.theta = theta; // theta是俯仰面（竖直面）内的角度，范围0~180度
+      let position = new THREE.Vector3()
+      position.setFromSpherical(spherical)
+      return position
+    },
+    lon2xyz(lonlat) {
+        const lon = lonlat[0] * Math.PI / 180;
+        const lat = lonlat[1] * Math.PI / 180;
+        const x = 120 * Math.cos(lat) * Math.sin(lon);
+        const y = 120 * Math.sin(lat);
+        const z = 120 * Math.cos(lon) * Math.cos(lat);
+        return { x:x, y:y, z:z };
+    } 
+
+```
  
 
 
