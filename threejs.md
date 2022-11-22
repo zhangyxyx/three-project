@@ -772,6 +772,214 @@ that.controls.reset();
     } 
 
 ```
+
+
+* 模型放在地球面上
+```JavaScript 
+function bar1(lnglat,name){  
+    var geometry1 = new THREE.PlaneBufferGeometry(10, 100); //默认在XOY平面上
+    var textureLoader = new THREE.TextureLoader(); // TextureLoader创建一个纹理加载器对象
+    var material = new THREE.MeshBasicMaterial({
+        map: texture,
+        color: 0x44ffaa, //光柱颜色，光柱map贴图是白色，可以通过color调节颜色   
+        transparent: true, //使用背景透明的png贴图，注意开启透明计算
+        side: THREE.DoubleSide, //双面可见
+        depthWrite:false,//是否对深度缓冲区有任何的影响
+    });
+    var mesh1 = new THREE.Mesh(geometry1, material);
+    var group1 = new THREE.Group()
+    // 两个光柱交叉叠加
+    group1.add(mesh1, mesh1.clone().rotateY(Math.PI / 2), mesh1.clone().rotateY(Math.PI / 4)) 
+    const coord2 = that.createPosition1(lnglat) 
+    const coordVec23 = new THREE.Vector3(coord2.x, coord2.y, coord2.z).normalize();
+    group1.position.set(coord2.x, coord2.y, coord2.z);
+    group1.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), coordVec23);  
+    var coord1=group1.position
+    that.renderstat(coord1,'text',name) 
+} 
+
+```
+
+
+* 文字放在球面上
+```JavaScript 
+rendertext(){
+    var that=this
+    var data=this.text
+    // 循环创建地标，文字标签
+    for (var i=0;i<data.length;i++) {
+    const name = data[i].name
+    this.renderstat(data[i].position,'text',data[i].name) 
+    }
+    var label=this.labeldata
+    for (var i=0;i<label.length;i++) {
+    const name = label[i].name 
+    const position = this.createPosition(label[i].position) 
+    createTextCanvas(position,name); 
+    }
+    //贴图标签，标签与球面融为一体
+    function createTextCanvas(position,name) {
+        //用canvas生成图片
+        let w = 200;
+        let h = 100;
+        let canvas = document.createElement("canvas");
+        let ctx = canvas.getContext('2d');
+        canvas.width = w;
+        canvas.height = h;
+        //左右翻转
+        ctx.scale(-1, 1);
+        ctx.translate(-w, 0);
+        //制作矩形
+        ctx.fillStyle = "#2c9d9a";
+        ctx.fillRect(0, 0, w, h)
+        //设置文字						
+        ctx.fillStyle = "black";
+        ctx.font = h/2 + 'px "微软雅黑"';
+        ctx.textAlign = 'center';
+        ctx.fillText(name, h, h/2+20);
+        
+        //生成图片
+        let url = canvas.toDataURL('image/png');
+        //几何体--长方形
+        let geometry1 = new THREE.PlaneGeometry(6, 3);
+        //将图片构建到纹理中
+        let material1 = new THREE.MeshBasicMaterial({
+            map: new THREE.TextureLoader().load(url),
+            side: THREE.DoubleSide, //两面可见
+            opacity: 1
+        });
+        let txtMesh = new THREE.Mesh(geometry1, material1);	 
+        txtMesh.position.copy(position);				
+        txtMesh.lookAt(new THREE.Vector3(0,0,0));					
+        that.scene.add(txtMesh);
+    } 
+},
+```
+
+* 地球上的飞线
+```JavaScript 
+    renderLine(){
+      var that=this
+      var R=this.radius
+      var groupLines=new THREE.Group(),aGroup=new THREE.Group(),animateDots = [];
+      
+      var data=this.linedata
+      for(var i=0;i<data.length;i++){
+        if(data[i].name==='1'){
+          var start=that.createPosition(data[i].start)
+          var end=that.createPosition(data[i].end)
+        }else if(data[i].name==='2'){
+          var start=that.createPosition(data[i].start)
+          var end=data[i].end
+        }else{
+          var start=that.createPosition(data[i].start)
+          var end=data[i].end
+        }
+       
+        var line = addLines(new THREE.Vector3(start.x,start.y,start.z),new THREE.Vector3(end.x,end.y,end.z),data[i].name); 
+        line.lineMesh.name=data[i].name
+        if(data[i].name!='1'&&data[i].name!='2'){
+          line.lineMesh.computeLineDistances();
+        }     
+        groupLines.name='line'
+        groupLines.add(line.lineMesh);
+        animateDots.push({data:line.curve.getPoints(80),name:data[i].name});
+      }
+
+      // 添加动画
+			for (let i = 0; i < animateDots.length; i++) { 
+				let aGeo = new THREE.SphereGeometry(0.5,10,10);
+				let aMater = new THREE.MeshPhongMaterial({ color: '#fff' });
+				let aMesh = new THREE.Mesh(aGeo, aMater);
+        aMesh.name=animateDots[i].name
+				aGroup.add(aMesh);
+			} 
+      this.scene.add(groupLines);
+
+      var vIndex = 0;
+			function animateLine() { 
+				aGroup.children.forEach((elem, index) => { 
+					let v = animateDots[index].data[vIndex];
+					elem.position.set(v.x, v.y, v.z);
+				});
+				vIndex++;
+				if (vIndex > 80) {
+					vIndex = 0;
+				}
+				setTimeout(animateLine, 20);
+			}
+      aGroup.name='point'
+			this.scene.add(aGroup);  
+			animateLine();
+
+      // 添加线条
+      function addLines(v0, v3,name) { 
+        // 夹角
+        var angle = (v0.angleTo(v3) * 1.8) / Math.PI / 0.1; // 0 ~ Math.PI
+        var aLen = angle * 2,
+          hLen = angle * angle * 120;
+        var p0 = new THREE.Vector3(0, 0, 0); 
+
+        // 法线向量
+        var rayLine = new THREE.Ray(p0, getVCenter(v0.clone(), v3.clone()));
+        var temp = new THREE.Vector3();
+        // 顶点坐标
+        var vtop = rayLine.at(hLen / rayLine.at(1,temp).distanceTo(p0),temp);
+
+        // 控制点坐标
+        var v1 = getLenVcetor(v0.clone(), vtop, aLen);
+        var v2 = getLenVcetor(v3.clone(), vtop, aLen);
+
+        // 绘制贝塞尔曲线
+        var curve = new THREE.CubicBezierCurve3(v0, v1, v2, v3);
+        var geometry = new THREE.BufferGeometry();
+        const pointsArray =curve.getPoints(20) 
+        var points=[],colors=[]
+        for(var i=0;i<pointsArray.length;i++){
+          points.push(pointsArray[i].x,pointsArray[i].y,pointsArray[i].z) 
+          var color= new THREE.Color('#00F5B8')
+          colors.push(color.r, color.g, color.b); 
+        }  
+        if(name!='1'&&name!='2'){
+          var material = new THREE.LineDashedMaterial({ 
+            vertexColors: true,
+            dashSize: 1,//短划线的大小
+            gapSize: 3,//短划线之间的距离 
+          });
+        } else{
+          var material = new THREE.LineDashedMaterial({ 
+            vertexColors: true,  
+            lineWidth:2,
+          }); 
+        }
+        // var material = new THREE.LineDashedMaterial({ 
+        //   vertexColors: true,  
+        // }); 
+ 
+        geometry.setAttribute("position", new THREE.Float32BufferAttribute(points, 3));
+        geometry.setAttribute("color", new THREE.Float32BufferAttribute(colors, 3)); 
+
+        var mesh=new THREE.Line(geometry, material)
+        mesh.name=name
+        curve.name=name
+        return {
+          curve: curve,
+          lineMesh: mesh
+        };
+      } 
+      // 计算v1,v2 的中点
+      function getVCenter(v1, v2) {
+        let v = v1.add(v2);
+        return v.divideScalar(2);
+      } 
+      // 计算V1，V2向量固定长度的点
+      function getLenVcetor(v1, v2, len) {
+        let v1v2Len = v1.distanceTo(v2);
+        return v1.lerp(v2, len / v1v2Len);
+      }
+    },  
+
+```
  
 
 
