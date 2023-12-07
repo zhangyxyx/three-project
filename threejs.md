@@ -38,6 +38,24 @@ mesh.receiveShadow = true // 接受阴影
 
 ```
 
+*  背景透明度
+```JavaScript
+//平行光 聚光灯 
+this.renderer.setClearAlpha(0.0)
+
+```
+*  场景整体移动
+```JavaScript
+//平行光 聚光灯 
+
+scene.translateY(i);
+
+```
+
+
+
+
+
 *  发光
 ```JavaScript
 
@@ -671,7 +689,7 @@ function choose(event) {
   var y = -((event.clientY - getBoundingClientRect .top) / container.offsetHeight) * 2 + 1;  
   var raycaster = new THREE.Raycaster(); 
   raycaster.setFromCamera(new THREE.Vector2(x, y), that.camera); 
-  var intersects = raycaster.intersectObjects(arr);
+  var intersects = raycaster.intersectObjects(arr,true);
 
   if (intersects.length > 0) {}
 } 
@@ -980,6 +998,38 @@ rendertext(){
     },  
 
 ```
+
+* 防止深度优化 纹理闪烁
+```JavaScript 
+this.renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true,
+        logarithmicDepthBuffer: true
+      });
+
+```
+* 渲染大量数据
+```JavaScript 
+function renderTrajectory(data) {
+    var that = this
+    const matrix = new THREE.Matrix4();
+    const color = new THREE.Color();
+    let material = new THREE.MeshBasicMaterial({ color: 'red' });
+    let boxes
+    const geometryBox = new THREE.BoxBufferGeometry(9999, 9999, 9999);
+    boxes = new THREE.InstancedMesh(geometryBox, material, data.length);
+    boxes.castShadow = true;
+    boxes.receiveShadow = true;
+    for (let i = 0; i < data.length; i++) {
+        matrix.setPosition(data[i].x, data[i].y, data[i].z);
+        boxes.setMatrixAt(i, matrix);
+    }
+    return boxes
+
+}
+
+```
+
  
 
 
